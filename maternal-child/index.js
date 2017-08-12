@@ -14,20 +14,23 @@ const url = require('url');
 const topicUrl = 'https://www.zhihu.com/topic/19556989/top-answers';
 
 // 获取精华频道共有多少页
-const getPages = () => {
-  let pages;
-  superagent.get(topicUrl).end((err, res) => {
+const getPages = (url) => {
+  return new Promise((resolve, reject) => {
+    superagent.get(url).end((err, res) => {
     if (err) {
-      console.log(err);
+      reject(err);
     }
     const $ = cheerio.load(res.text);
-    pages = $('.zm-invite-pager').children().last().prev().find('a').text().trim();
+    const pages = $('.zm-invite-pager').children().last().prev().find('a').text().trim();
+    resolve(pages);
   });
-  return pages;
+  })
 }
 
-const pages = getPages();
-console.log(pages);
+getPages(topicUrl).then((pages) => {
+  console.log(pages);
+});
+
 
 // let topicUrls = [];
 // superagent.get(topicUrl)
