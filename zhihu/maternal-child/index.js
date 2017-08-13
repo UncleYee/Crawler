@@ -7,6 +7,7 @@ const superagent = require('superagent');
 const cheerio = require('cheerio');
 const async = require('async');
 const fs = require('fs');
+const {RandomNumBoth} = require('../../utils/Random');
 // url 模块是 Node.js 标准库里面的
 const url = require('url');
 
@@ -24,13 +25,6 @@ const headers = {'Accept': '*/*',
   'Referer': 'http://www.baidu.com/'
 };
 
-
-const RandomNumBoth = (Min,Max) => {
-      var Range = Max - Min;
-      var Rand = Math.random();
-      var num = Min + Math.round(Rand * Range); //四舍五入
-      return num;
-}
 // 获取精华频道共有多少页
 const getPageNums = (url) => {
   const ip =  RandomNumBoth(1 , 254)
