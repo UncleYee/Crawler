@@ -1,7 +1,6 @@
 const request = require("request");
 const iconv = require('iconv-lite');
 
-
 function getProxyList() {
     var apiURL = 'http://www.66ip.cn/mo.php?sxb=&tqsl=100&port=&export=&ktip=&sxa=&submit=%CC%E1++%C8%A1&textarea=http%3A%2F%2Fwww.66ip.cn%2F%3Fsxb%3D%26tqsl%3D100%26ports%255B%255D2%3D%26ktip%3D%26sxa%3D%26radio%3Dradio%26submit%3D%25CC%25E1%2B%2B%25C8%25A1';
 
@@ -46,45 +45,6 @@ function getProxyList() {
     })
 }
 
-
-getProxyList().then(function (proxyList) {
-
-    var targetOptions = {
-        method: 'GET',
-        url: 'http://ip.chinaz.com/getip.aspx',
-        timeout: 8000,
-        encoding: null,
-    };
-
-    //这里修改一下，变成你要访问的目标网站
-    proxyList.forEach(function (proxyurl) {
-
-        console.log(`testing ${proxyurl}`);
-
-        targetOptions.proxy = 'http://' + proxyurl;
-        request(targetOptions, function (error, response, body) {
-            try {
-                if (error) throw error;
-
-
-                body = body.toString();
-
-                console.log(body);
-
-                eval(`var ret = ${body}`);
-
-
-                if (ret) {
-                    console.log(`验证成功==>> ${ret.address}`);
-                }
-            } catch (e) {
-                // console.error(e);
-            }
-
-
-        });
-
-    });
-}).catch(e => {
-    console.log(e);
-})
+module.exports ={
+  getProxyList: getProxyList
+}
