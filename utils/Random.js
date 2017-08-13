@@ -6,6 +6,14 @@ const RandomNumBoth = (Min,Max) => {
       return num;
 }
 
+const randomIp =() => {
+  return RandomNumBoth(1 , 254)
+    + "." + RandomNumBoth(1 , 254)
+    + "." + RandomNumBoth(1 , 254)
+    + "." + RandomNumBoth(1 , 254);
+}
+
 module.exports = {
-  RandomNumBoth: RandomNumBoth
+  RandomNumBoth: RandomNumBoth,
+  randomIp: randomIp
 }

@@ -7,7 +7,7 @@ const superagent = require('superagent');
 const cheerio = require('cheerio');
 const async = require('async');
 const fs = require('fs');
-const {RandomNumBoth} = require('../../utils/Random');
+const {RandomNumBoth, randomIp} = require('../../utils/Random');
 // url 模块是 Node.js 标准库里面的
 const url = require('url');
 
@@ -27,10 +27,7 @@ const headers = {'Accept': '*/*',
 
 // 获取精华频道共有多少页
 const getPageNums = (url) => {
-  const ip =  RandomNumBoth(1 , 254)
-    + "." + RandomNumBoth(1 , 254)
-    + "." + RandomNumBoth(1 , 254)
-    + "." + RandomNumBoth(1 , 254);
+  const ip = randomIp();
   headers['X-Forwarded-For'] = ip;
 
   return new Promise((resolve, reject) => {
@@ -46,10 +43,7 @@ const getPageNums = (url) => {
 }
 
 const getQuestonUrls = (parentUrl, pages) => {
-  const ip =  RandomNumBoth(1 , 254)
-    + "." + RandomNumBoth(1 , 254)
-    + "." + RandomNumBoth(1 , 254)
-    + "." + RandomNumBoth(1 , 254);
+  const ip = randomIp();
   headers['X-Forwarded-For'] = ip;
   return new Promise((resolve, reject) => {
     superagent.get(parentUrl).set(headers).end((err, res) => {
@@ -72,10 +66,7 @@ const getQuestonUrls = (parentUrl, pages) => {
 const fetchData = () => {
   let concurrencyCount = 0;
   const fetchUrl = (url, callback) => {
-    const ip =  RandomNumBoth(1 , 254)
-      + "." + RandomNumBoth(1 , 254)
-      + "." + RandomNumBoth(1 , 254)
-      + "." + RandomNumBoth(1 , 254);
+    const ip = randomIp();
     headers['X-Forwarded-For'] = ip;
     const delay = parseInt((Math.random() * 10000000) % 2000, 10);
     concurrencyCount++;
@@ -95,7 +86,7 @@ const fetchData = () => {
     }, delay);
   };
 
-  async.mapLimit(topicUrls, 3, (url, callback) => {
+  async.mapLimit(topicUrls, 5, (url, callback) => {
     fetchUrl(url, callback);
   }, (err, result) => {
     console.log('final:');
@@ -119,51 +110,3 @@ getPageNums(topicUrl).then((pages) => {
   console.log(pages);
   fetchPage(pages);
 });
-
-// let topicUrls = [];
-// superagent.get(topicUrl)
-// .end((err, res) => {
-//   if (err) {
-//       return console.error(err);
-//   }
-//   const $ = cheerio.load(res.text);
-//   // 获取第一页的所有问题链接
-  // $('#zh-topic-top-page-list div .feed-main div h2 a').each((idx, element) => {
-  //   const $element = $(element);
-  //   // $element.attr('href') 本来的样子是 /topic/542acd7d5d28233425538b04
-  //   // 我们用 url.resolve 来自动推断出完整 url，变成
-  //   // https://cnodejs.org/topic/542acd7d5d28233425538b04 的形式
-  //   // 具体请看 http://nodejs.org/api/url.html#url_url_resolve_from_to 的示例
-  //   //var href = url.resolve(topicUrl, $element.attr('href'));
-  //   const href = url.resolve('https://www.zhihu.com', $element.attr('href'));
-  //   topicUrls.push(href);
-//   });
-
-  // let concurrencyCount = 0;
-  // const fetchUrl = (url, callback) => {
-  //   const delay = parseInt((Math.random() * 10000000) % 2000, 10);
-  //   concurrencyCount++;
-  //   //请求
-  //   superagent.get(url)
-  //   .end((err, res) => {
-  //     if (err) {
-  //         return console.log(err);
-  //     }
-  //     const $ = cheerio.load(res.text);
-  //     const title = $('.App-main .QuestionPage .QuestionHeader-title').text().trim();
-  //     console.log('现在的并发数是', concurrencyCount, '，正在抓取的是', url, '，耗时' + delay + '毫秒, ' + 'title:' + title);
-  //   })
-    
-  //   setTimeout(() => {
-  //     concurrencyCount--;
-  //     callback(null, url);
-  //   }, delay);
-  // };
-
-  // async.mapLimit(topicUrls, 5, (url, callback) => {
-  //   fetchUrl(url, callback);
-  // }, (err, result) => {
-  //   console.log('final:');
-  //   console.log(result);
-  // });
-// });
