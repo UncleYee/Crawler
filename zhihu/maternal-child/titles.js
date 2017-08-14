@@ -1,6 +1,6 @@
 /**
- * 爬取知乎母婴频道精华帖
- * 2017-08-12
+ * 爬取知乎母婴频道精华问题描述
+ * 2017-08-14
  * @author: UncleYee
  */
 const request = require('superagent');
@@ -19,6 +19,7 @@ let fetchId = 0;
 // 知乎母婴频道精华首页
 const topicUrl = 'https://www.zhihu.com/topic/19556989/top-answers';
 let topicUrls = [];
+let titles = [];
 const headers = {'Accept': '*/*',
   'Accept-Language': 'en-US,en;q=0.8',
   'Cache-Control': 'max-age=0',
@@ -27,11 +28,16 @@ const headers = {'Accept': '*/*',
   'Referer': 'http://www.baidu.com/'
 };
 
+// 存储文件
+const saveFile = (info) => {
+  fs.writeFile('titles.md', info, (err) => {
+    if(err) throw err;
+    console.log('文件已保存')
+  });
+}
+
 // 获取精华频道共有多少页
 const getPageNums = (url) => {
-  // const ip = randomIp();
-  // headers['X-Forwarded-For'] = ip;
-
   return new Promise((resolve, reject) => {
     request.get(url).set(headers).end((err, res) => {
       if (err) {
@@ -44,9 +50,8 @@ const getPageNums = (url) => {
   });
 }
 
+// 抓取每一页的所有问题和链接
 const getQuestionUrls = (parentUrl, pages) => {
-  // const ip = randomIp();
-  // headers['X-Forwarded-For'] = ip;
   return new Promise((resolve, reject) => {
     request.get(parentUrl).set(headers).end((err, res) => {
       if(err) {
@@ -55,7 +60,9 @@ const getQuestionUrls = (parentUrl, pages) => {
       const $ = cheerio.load(res.text);
       $('#zh-topic-top-page-list div .feed-main div h2 a').each((idx, element) => {
         const $element = $(element);
+        const title = $element.text();
         const href = url.resolve('https://www.zhihu.com', $element.attr('href'));
+        titles.push(title);
         topicUrls.push(href);
       });
       console.log(`现总计共${topicUrls.length}条数据`)
@@ -64,36 +71,14 @@ const getQuestionUrls = (parentUrl, pages) => {
   });
 }
 
-// 抓取每一个问题
-const fetchData = () => {
-  let concurrencyCount = 0;
-  const fetchUrl = (url, callback) => {
-    // const ip = randomIp();
-    // headers['X-Forwarded-For'] = ip;
-    const delay = parseInt((Math.random() * 10000000) % 2000, 10);
-    concurrencyCount++;
-    //请求
-    request.get(url).set(headers).end((err, res) => {
-      if (err) {
-          return console.log(err);
-      }
-      const $ = cheerio.load(res.text);
-      const title = $('.App-main .QuestionPage .QuestionHeader-title').text().trim();
-      console.log('现在的并发数是', concurrencyCount, '，正在抓取的是', url, '，耗时' + delay + '毫秒, ' + 'title:' + title);
-    })
-    
-    setTimeout(() => {
-      concurrencyCount--;
-      callback(null, url);
-    }, delay);
-  };
-
-  async.mapLimit(topicUrls, 5, (url, callback) => {
-    fetchUrl(url, callback);
-  }, (err, result) => {
-    console.log('final:');
-    console.log(result);
-  });
+const mergeInfo = (titles, urls) => {
+  let results = '';
+  for(let i = 0; i < titles.length; i++) {
+    // 去除爬取到的字符串中的换行、回车符，并在一行的最后加上换行符
+    const temp = `[${titles[i].replace(/[\r\n]/g, '')}](${urls[i]})\r`;
+    results += temp;
+  }
+  return results;
 }
 
 // 抓取每一页的问题的链接
@@ -103,11 +88,13 @@ const fetchPage = (pages) => {
     console.log(`正在抓取第${fetchId}页`);
     getQuestionUrls(`${topicUrl}?page=${fetchId}`, pages);
   } else {
-    console.log('已经抓取完所有数据，开始进行问题内容抓取');
-    fetchData();
+    console.log('已经抓取完所有数据');
+    const results = mergeInfo(titles, topicUrls);
+    saveFile(results);
   }
 }
 
 getPageNums(topicUrl).then((pages) => {
+  console.log(`爬取目标共${pages}页，现在开始爬取数据`)
   fetchPage(pages);
 });
