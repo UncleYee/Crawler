@@ -30,7 +30,7 @@ const headers = {'Accept': '*/*',
 
 // 存储文件
 const saveFile = (info) => {
-  fs.writeFile('titles.md', info, (err) => {
+  fs.writeFile('titles.txt', info, (err) => {
     if(err) throw err;
     console.log('文件已保存')
   });
@@ -75,7 +75,8 @@ const mergeInfo = (titles, urls) => {
   let results = '';
   for(let i = 0; i < titles.length; i++) {
     // 去除爬取到的字符串中的换行、回车符，并在一行的最后加上回车换行
-    const temp = `[${titles[i].replace(/[\r\n]/g, '')}](${urls[i]})  \r\n`;
+    // const temp = `[${titles[i].replace(/[\r\n]/g, '')}](${urls[i]})  \r\n`;
+    const temp = `${titles[i].replace(/[\r\n]/g, '')}\r\n`;
     results += temp;
   }
   return results;
