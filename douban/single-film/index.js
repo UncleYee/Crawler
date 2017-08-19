@@ -57,7 +57,7 @@ const getPageNums = (url) => {
 
 // 存储文件
 const saveFile = (info) => {
-  fs.writeFile('comment.txt', info, (err) => {
+  fs.writeFile('comment.csv', info, (err) => {
     if(err) throw err;
     console.log('文件已保存')
   });
@@ -81,8 +81,8 @@ const fetchData = () => {
         const $elm = $(elm);
         const score = dir[$elm.find('header').find('.main-title-rating').attr('title')];
         const time = $elm.find('header').find('.main-meta').text().trim();
-        // console.log(`得分：${score}, 时间：${time}`);
-        const temp = `评论时间：${time}，评分：${score}\r\n`
+        // const temp = `评论时间：${time}，评分：${score}\r\n`;
+        const temp = `${time}，${score}\r\n`;
         results.push(temp);
       });
       
