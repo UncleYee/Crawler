@@ -3,15 +3,19 @@
  * 2017-08-17
  * @author: UncleYee
  */
+
 const request = require('superagent');
+// superagent proxy 扩展
+require('superagent-proxy')(request);
 const cheerio = require('cheerio');
 const async = require('async');
 const fs = require('fs');
 const {RandomNumBoth, randomIp} = require('../../utils/Random');
 // url 模块是 Node.js 标准库里面的
 const url = require('url');
-// superagent proxy 扩展
-require('superagent-proxy')(request);
+// Sequlize
+const sequelize = require('./conn');
+const {Comment} = require('./model');
 
 // 计数器
 let fetchId = 0;
@@ -34,7 +38,7 @@ const headers = {'Accept': '*/*',
   'Cache-Control': 'max-age=0',
   'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36',
   'Connection': 'keep-alive',
-  'Referer': 'http://www.baidu.com/'
+  'Referer': 'https://www.taobao.com/'
 };
 
 // 获取影评总页数
@@ -63,6 +67,16 @@ const saveFile = (info) => {
   });
 }
 
+// 存入数据库
+const insert = (time, score) => {
+  Comment.sync({force: false}).then(() => {
+    return Comment.create({
+      time: time,
+      score: score
+    })
+  })
+}
+
 // 抓取每一个影评
 const fetchData = () => {
   let concurrencyCount = 0;
@@ -82,8 +96,10 @@ const fetchData = () => {
         const score = dir[$elm.find('header').find('.main-title-rating').attr('title')];
         const time = $elm.find('header').find('.main-meta').text().trim();
         // const temp = `评论时间：${time}，评分：${score}\r\n`;
-        const temp = `${time}，${score}\r\n`;
-        results.push(temp);
+        insert(time, parseInt(score))
+        // 存储为文件
+        // const temp = `${time}，${score}\r\n`;
+        // results.push(temp);
       });
       
       console.log('现在的并发数是', concurrencyCount, '，正在抓取的是', url, '，耗时' + delay + '毫秒 ');
@@ -99,7 +115,7 @@ const fetchData = () => {
     fetchUrl(url, callback);
   }, (err, result) => {
     console.log('抓取结束!');
-    saveFile(results.toString().replace(/,/g,''));
+    // saveFile(results.toString().replace(/,/g,''));
   });
 }
 

@@ -1,0 +1,8 @@
+[2017-09-22 16:56:19.506] [INFO] sqlite - Executing (default): SELECT 1+1 AS result
+[2017-09-22 16:56:19.515] [INFO] sqlite - Executing (default): CREATE TABLE IF NOT EXISTS `users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` VARCHAR(255), `age` INTEGER, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL);
+[2017-09-22 16:56:19.523] [INFO] sqlite - Executing (default): PRAGMA INDEX_LIST(`users`)
+[2017-09-22 16:56:19.538] [INFO] sqlite - Executing (default): INSERT INTO `users` (`id`,`name`,`age`,`createdAt`,`updatedAt`) VALUES (NULL,'小夏',20,'2017-09-22 08:56:19.527 +00:00','2017-09-22 08:56:19.527 +00:00');
+[2017-09-22 16:56:41.742] [ERROR] sqlite - Executing (default): SELECT 1+1 AS result
+[2017-09-22 16:56:41.751] [ERROR] sqlite - Executing (default): CREATE TABLE IF NOT EXISTS `users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` VARCHAR(255), `age` INTEGER, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL);
+[2017-09-22 16:56:41.762] [ERROR] sqlite - Executing (default): PRAGMA INDEX_LIST(`users`)
+[2017-09-22 16:56:41.781] [ERROR] sqlite - Executing (default): INSERT INTO `users` (`id`,`name`,`age`,`createdAt`,`updatedAt`) VALUES (NULL,'小夏',20,'2017-09-22 08:56:41.766 +00:00','2017-09-22 08:56:41.766 +00:00');
