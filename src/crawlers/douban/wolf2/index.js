@@ -10,12 +10,16 @@ require('superagent-proxy')(request);
 const cheerio = require('cheerio');
 const async = require('async');
 const fs = require('fs');
-const {RandomNumBoth, randomIp} = require('../../utils/Random');
+const {RandomNumBoth, randomIp} = require('../../../../public/utils/Random');
 // url 模块是 Node.js 标准库里面的
 const url = require('url');
 // Sequlize
-const sequelize = require('./conn');
-const {Comment} = require('./model');
+const initConn = require('../../../db/conn');
+const config = require('../../../../config/douban/wolf2');
+const {Comment} = require('../../../models/douban/model');
+
+// 连接数据库
+initConn(config);
 
 // 计数器
 let fetchId = 0;

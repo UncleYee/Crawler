@@ -1,0 +1,4 @@
+[2017-09-28 18:25:04.265] [INFO] sqlite - Executing (default): SELECT 1+1 AS result
+[2017-09-28 18:25:04.274] [INFO] sqlite - Executing (default): CREATE TABLE IF NOT EXISTS `users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` VARCHAR(255), `age` INTEGER, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL);
+[2017-09-28 18:25:04.284] [INFO] sqlite - Executing (default): PRAGMA INDEX_LIST(`users`)
+[2017-09-28 18:25:04.301] [INFO] sqlite - Executing (default): INSERT INTO `users` (`id`,`name`,`age`,`createdAt`,`updatedAt`) VALUES (NULL,'小夏',20,'2017-09-28 10:25:04.289 +00:00','2017-09-28 10:25:04.289 +00:00');

@@ -4,7 +4,7 @@ log4js.configure({
   appenders: {
     cheese: {
       type: 'file',
-      filename: 'default.log'
+      filename: './logs/default.log'
     }
   },
   categories: { default: { appenders: ['cheese'], level: 'debug' } }
