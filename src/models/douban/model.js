@@ -1,5 +1,9 @@
 const Sequelize = require('sequelize');
-const sequelize = require('./conn');
+const config = require('../../../config/douban/wolf2');
+const initConn = require('../../db/conn');
+
+const sequelize = initConn(config);
+
 
 const User = sequelize.define('user', {
   name: {

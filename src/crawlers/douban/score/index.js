@@ -10,27 +10,24 @@ require('superagent-proxy')(request);
 const cheerio = require('cheerio');
 const async = require('async');
 const fs = require('fs');
-const {RandomNumBoth, randomIp} = require('../../../../public/utils/Random');
 // url 模块是 Node.js 标准库里面的
 const url = require('url');
 // Sequlize
 const initConn = require('../../../db/conn');
 const config = require('../../../../config/douban/wolf2');
 const {Comment} = require('../../../models/douban/model');
+const {saveFile} = require('../../../../public/utils/saveFile');
+// 豆瓣评分字典
+const scoreDir = require('../../../../public/dictionaries/douban/scoreDir');
+const {RandomNumBoth, randomIp} = require('../../../../public/utils/random');
 
-// 连接数据库
-initConn(config);
+console.log(scoreDir);
+
+// // 连接数据库
+// initConn(config);
 
 // 计数器
 let fetchId = 0;
-// 字典
-const dir = {
-  '很差': 2,
-  '较差': 4,
-  '还行': 6,
-  '推荐': 8,
-  '力荐': 10,
-}
 //结果
 let results = [];
 
@@ -63,14 +60,6 @@ const getPageNums = (url) => {
   });
 }
 
-// 存储文件
-const saveFile = (info) => {
-  fs.writeFile('comment.csv', info, (err) => {
-    if(err) throw err;
-    console.log('文件已保存')
-  });
-}
-
 // 存入数据库
 const insert = (time, score) => {
   Comment.sync({force: false}).then(() => {
@@ -100,7 +89,7 @@ const fetchData = () => {
         const score = dir[$elm.find('header').find('.main-title-rating').attr('title')];
         const time = $elm.find('header').find('.main-meta').text().trim();
         // const temp = `评论时间：${time}，评分：${score}\r\n`;
-        insert(time, parseInt(score))
+        // insert(time, parseInt(score))
         // 存储为文件
         // const temp = `${time}，${score}\r\n`;
         // results.push(temp);
@@ -119,7 +108,7 @@ const fetchData = () => {
     fetchUrl(url, callback);
   }, (err, result) => {
     console.log('抓取结束!');
-    // saveFile(results.toString().replace(/,/g,''));
+    // saveFile(results.toString().replace(/,/g,''), 'comment.cvs');
   });
 }
 

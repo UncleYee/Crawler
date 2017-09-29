@@ -38,6 +38,8 @@ const initConn = (config) => {
     console.error('数据库连接失败:', err);
   });
 
+  return sequelize;
+
 }
 
 module.exports = initConn;

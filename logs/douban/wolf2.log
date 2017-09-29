@@ -1,0 +1,1 @@
+[2017-09-29 11:47:29.536] [INFO] sqlite - Executing (default): SELECT 1+1 AS result
