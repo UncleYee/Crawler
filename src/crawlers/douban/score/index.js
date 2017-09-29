@@ -12,19 +12,13 @@ const async = require('async');
 const fs = require('fs');
 // url 模块是 Node.js 标准库里面的
 const url = require('url');
-// Sequlize
-const initConn = require('../../../db/conn');
-const config = require('../../../../config/douban/wolf2');
+// Sequlize Model
 const {Comment} = require('../../../models/douban/model');
-const {saveFile} = require('../../../../public/utils/saveFile');
 // 豆瓣评分字典
 const scoreDir = require('../../../../public/dictionaries/douban/scoreDir');
+// 工具
 const {RandomNumBoth, randomIp} = require('../../../../public/utils/random');
-
-console.log(scoreDir);
-
-// // 连接数据库
-// initConn(config);
+const {saveFile} = require('../../../../public/utils/saveFile');
 
 // 计数器
 let fetchId = 0;
