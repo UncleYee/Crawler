@@ -7,7 +7,7 @@ const request = require('superagent');
 const cheerio = require('cheerio');
 const async = require('async');
 const fs = require('fs');
-const {RandomNumBoth, randomIp} = require('../../utils/Random');
+const {RandomNumBoth, randomIp} = require('../../../../public/utils/Random');
 // url 模块是 Node.js 标准库里面的
 const url = require('url');
 // superagent proxy 扩展

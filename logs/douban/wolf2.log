@@ -1,1 +1,5 @@
 [2017-09-29 11:47:29.536] [INFO] sqlite - Executing (default): SELECT 1+1 AS result
+[2017-10-27 14:29:36.419] [INFO] sqlite - Executing (default): SELECT 1+1 AS result
+[2017-10-27 14:30:38.175] [INFO] sqlite - Executing (default): SELECT 1+1 AS result
+[2017-10-27 16:41:47.428] [INFO] sqlite - Executing (default): SELECT 1+1 AS result
+[2017-10-27 16:42:51.956] [INFO] sqlite - Executing (default): SELECT 1+1 AS result

@@ -29,8 +29,6 @@ const headers = {'Accept': '*/*',
 
 // 获取精华频道共有多少页
 const getPageNums = (url) => {
-  // const ip = randomIp();
-  // headers['X-Forwarded-For'] = ip;
 
   return new Promise((resolve, reject) => {
     request.get(url).set(headers).end((err, res) => {
@@ -45,8 +43,6 @@ const getPageNums = (url) => {
 }
 
 const getQuestionUrls = (parentUrl, pages) => {
-  // const ip = randomIp();
-  // headers['X-Forwarded-For'] = ip;
   return new Promise((resolve, reject) => {
     request.get(parentUrl).set(headers).end((err, res) => {
       if(err) {
@@ -68,8 +64,6 @@ const getQuestionUrls = (parentUrl, pages) => {
 const fetchData = () => {
   let concurrencyCount = 0;
   const fetchUrl = (url, callback) => {
-    // const ip = randomIp();
-    // headers['X-Forwarded-For'] = ip;
     const delay = parseInt((Math.random() * 10000000) % 2000, 10);
     concurrencyCount++;
     //请求

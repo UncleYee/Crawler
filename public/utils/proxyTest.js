@@ -1,5 +1,7 @@
 const {getProxyList} = require('./proxyPool');
-const request = require("request");
+const request = require('request');
+
+console.log(1);
 
 getProxyList().then(function (proxyList) {
 

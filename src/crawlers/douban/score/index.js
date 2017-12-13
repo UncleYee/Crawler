@@ -80,7 +80,7 @@ const fetchData = () => {
       const $ = cheerio.load(res.text);
       $('#wrapper #content .article .review-list .main').each((idx, elm) => {
         const $elm = $(elm);
-        const score = dir[$elm.find('header').find('.main-title-rating').attr('title')];
+        const score = scoreDir[$elm.find('header').find('.main-title-rating').attr('title')];
         const time = $elm.find('header').find('.main-meta').text().trim();
         // const temp = `评论时间：${time}，评分：${score}\r\n`;
         // insert(time, parseInt(score))
